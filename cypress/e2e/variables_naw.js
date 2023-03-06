@@ -32,3 +32,8 @@ export function pass_intro() {
     }
     cy.contains('Empecemos').click();
 };
+
+//Toma el numero de creditos del wdget que yo vaya a elegir, luego debo crear el nombre de la variable y listo
+export function widget_credit(numer_widget, name_variable_credits) {
+    cy.get('.credit-widget-body-container').eq(numer_widget).children().eq(1).invoke('text').as(name_variable_credits);
+}

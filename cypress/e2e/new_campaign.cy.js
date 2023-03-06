@@ -1,5 +1,5 @@
 /// <reference types="Cypress" />
-import { page_qa, password, password_admin, password$, email_admin, email_dm_own, email_company, login_as, pass_intro, home, clients_page, persons_page, toolbox_compa_comp_page, toolbox_compa_tags_page, toolbox_compa_jobs_page, campaign_page, name_row, name_job} from "./variables_naw.js";
+import { page_qa, password, password_admin, password$, email_company, login_as, pass_intro, home, toolbox_compa_jobs_page, campaign_page, name_row, name_job} from "./variables_naw.js";
 
 describe('Nueva campaña', () => {
     before(function () {
@@ -15,13 +15,15 @@ describe('Nueva campaña', () => {
         });
       });
     
-      xcontext('Diseño, inputs, etc', function()  {
-          it('Titulos del modulo', function() {
+      context('Diseño, inputs, etc', function()  {
+          it('Titulos del modulo y redireccion hacia atras', function() {
             cy.visit(campaign_page);
             cy.get('.card-header > .button').click().wait(2000);
             cy.url().as('urlNewCampaign');
             cy.get('.left-side > p').should('have.text', 'Nueva campaña');
             cy.get('.button-group > .button').should('be.disabled');
+            cy.get('.left-side > .button > .material-symbols-rounded').click().wait(2000);
+            cy.url().should('include', campaign_page);
           })
           it('Escribo y borro contenido input nombre de campaña nombre de campaña', function() {
             cy.visit(this.urlNewCampaign).wait(2000);
@@ -64,7 +66,7 @@ describe('Nueva campaña', () => {
           });
       });
 
-      xcontext('Cuentas widgets', function() {
+      context('Cuentas widgets', function() {
         it('Visito la pagina y tomo el pre valor del widget', function() {
           cy.visit(campaign_page).wait(3000);
           cy.get('.card-header > .button').click().wait(2000);
@@ -165,7 +167,7 @@ describe('Nueva campaña', () => {
           });
       });
 
-      xcontext('Creacion de campaña desde HOME', function() {
+      context('Creacion de campaña desde HOME', function() {
         it('Creo campaña desde el home y chequeo la lista', function() {
           cy.visit(home).wait(2000);
           cy.get('.primary').should('contain', 'Nueva campaña').click().wait(2000);
