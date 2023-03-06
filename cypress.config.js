@@ -7,6 +7,6 @@ module.exports = defineConfig({
     },
     watchForFileChanges: false,
     //Es para el cy.session
-    experimentalSessionAndOrigin: true
+    experimentalSessionAndOrigin: true,
   },
 });

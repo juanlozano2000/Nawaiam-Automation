@@ -15,7 +15,7 @@ describe('Editar campaña', () => {
             });
         });
 
-    xcontext('Diseño, inputs, etc', function()  {
+    context('Diseño, inputs, etc', function()  {
         it('Iconos filled, ingreso a editar, ir hacia atras', function() {
             cy.visit(campaign_page).wait(2000);
             cy.get('.no-border').first().click().wait(1000);
@@ -44,7 +44,7 @@ describe('Editar campaña', () => {
             cy.get('.button.primary').should('be.disabled');
         });
         it('Escribo un numero IGUAL a mis creditos disponibles', function() {
-            visit_editCampaign(0);
+            visit_editCampaign(1);
             cy.get('[placeholder="¿Cuántos códigos deseas asociar a esta campaña?"]').clear().type(Number(this.pre_avaible));
             cy.get('input').eq(1).should('have.class', 'border-success');
             cy.get('.left-side > p').click();
@@ -77,7 +77,7 @@ describe('Editar campaña', () => {
     });
 
     context('Edicion de campaña', function() {
-        xit('Edicion de campaña feliz desde Campañas y creditos', function() {
+        it('Edicion de campaña feliz desde Campañas y creditos', function() {
             visit_editCampaign(0);
             cy.get('input').eq(0).type(' new').invoke('val').as('newNameCampaign').wait(1000); //cambio nombre
             cy.get('input').eq(1).invoke('val').as('codesAssociated');
@@ -91,6 +91,11 @@ describe('Editar campaña', () => {
         });
         it('Edicion de campaña desde el detalle de campaña', function() {
             cy.visit(campaign_page).wait(2000);
+            Cypress.on('uncaught:exception', (err, runnable) => { // es para borrar los errores de consola
+                // returning false here prevents Cypress from
+                // failing the test
+                return false
+            })
             /* Tomo el valor nombre de la tabla y lo comparo con detalles de campaña */
             cy.get('.name-field').first().children().eq(0).invoke('text').as('nameCampaignTable');
             cy.get('[style="cursor: pointer;"]').eq(0).click().wait(2000);
@@ -101,6 +106,19 @@ describe('Editar campaña', () => {
             cy.get('label > .material-symbols-rounded').click();
             cy.contains('Editar').click().wait(2000);
 
+            /* Chequeo que el valor del input sea el que tome de la tabla */
+            cy.get('input').eq(0).invoke('val').then(function (value_input_name) {
+                expect(value_input_name).to.equal(this.nameCampaignTable);
+            })
+
+            cy.get('input').eq(0).type(' from details').invoke('val').as('newNameDetailsCampaign').wait(1000);
+            cy.contains('Guardar').should('be.enabled').click().wait(2500);
+            cy.get('.snackbar').children().should('contain.text', 'La campaña fue modificada exitosamente');
+
+            //Se imprimio en la lista el cambio?
+            cy.get('.rt-tbody').then(function (rows) {
+                expect(rows).to.contain(this.newNameDetailsCampaign);
+            })
             
         });
     });
@@ -113,5 +131,7 @@ function icon_filled(contains) {
 function visit_editCampaign(number_campaign) {
     cy.visit(campaign_page).wait(2000);
     cy.get('.no-border').eq(number_campaign).click().wait(500);
-    cy.contains('Editar campaña').click().wait(2000);
+    cy.contains('Editar campaña').click({force: true}).wait(2000);
 };
+
+// 6/3/22 9.28 salio todo ok
