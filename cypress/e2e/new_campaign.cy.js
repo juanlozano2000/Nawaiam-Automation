@@ -112,7 +112,7 @@ describe('Nueva campaña', () => {
           cy.get('.button-group > .button').should('be.enabled').click().wait(2500);
           cy.get('.snackbar').children().should('contain.text', 'Se produjo un error al crear la campaña.');
         });
-        xit('Creacion Feliz SIN puesto', function() {
+        it('Creacion Feliz SIN puesto', function() {
           cy.visit(this.urlNewCampaign).wait(2000);
           cy.get('input').eq(0).type(name_row).invoke('val').as('name_campaign_created').wait(1000);
           cy.get('input').eq(1).type(10).wait(1000);
