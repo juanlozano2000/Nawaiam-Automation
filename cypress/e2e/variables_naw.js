@@ -15,6 +15,7 @@ export let toolbox_compa_comp_page = 'http://34.206.199.137:81/main/persons/grou
 export let toolbox_compa_tags_page = 'http://34.206.199.137:81/main/tags';
 export let toolbox_compa_jobs_page = 'http://34.206.199.137:81/main/jobs';
 export let name_row = 'CY' + (Math.random() + 1).toString(36).substring(7);
+export let name_row2 = (Math.random() + 1).toString(36).substring(7);
 export let name_job = 'CY' + (Math.random() + 1).toString(36).substring(7) + ' Job';
 
 
